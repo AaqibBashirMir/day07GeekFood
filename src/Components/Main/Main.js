@@ -8,14 +8,22 @@ function Main() {
     let [inputRating, setInputRating] = useState(0);
 
     const onsearchChange = (e) => {
+        let updateSearch;
+        let updateRating = 0;
 
         if (e.target.id === "searchBox") {
-            setEnteredKey(e.target.value);
+            updateSearch = e.target.value;
+            setEnteredKey(() => {
+                return updateSearch;
+            });
         }
         else if (e.target.id === "ratingBox") {
-            setInputRating(e.target.value)
+            updateRating = Number(e.target.value);
+            setInputRating(() => {
+                return Number(updateRating);
+            })
         }
-        const filterList = RestaurantList.filter((data) => data.name.toLowerCase().includes(enteredKey.toLowerCase()) && data.rating >= inputRating)
+        const filterList = RestaurantList.filter((data) => data.name.toLowerCase().includes(enteredKey.toLowerCase()) && data.rating >= updateRating)
 
         // console.log(e.target.value)
         console.log(filterList);
@@ -39,30 +47,32 @@ function Main() {
     return (
         <>
             <h1>Restaurant app</h1>
-            <section >
+            <section style={{
+                background:"yellow"
+            }}>
                 <div style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    margin:'20px',
+                    margin: '20px',
                 }}>
                     <input type="text" placeholder='searchRestaurants..' onChange={onsearchChange} id="searchBox" />
-                    <input type="number" step="1" min={1} max={5} onChange={onsearchChange} id="ratingBox" />
+                    <input type="number" step="1" min={1} max={5} onChange={onsearchChange} id="ratingBox" placeholder='Rating' />
                 </div>
 
                 <div style={{
                     display: "flex",
                     flexWrap: 'wrap',
-                    // padding: "30px",
-                    padding:"0 0 10px 10px ",
+                    padding: "0 0 10px 10px ",
                     gap: '50px',
                 }}>
-                    {
-                        restaurantData.map((restaurantDetails) => {
-                            {/* console.log(restaurantDetails) */ }
-                            return <RestaurantCard key={restaurantDetails._id._id} {...restaurantDetails} />
-                        })
-                    }
-                </div>
+                        {
+                            restaurantData.map((restaurantDetails) => {
+                                {/* console.log(restaurantDetails) */ }
+                                return <RestaurantCard style key={restaurantDetails._id._id} {...restaurantDetails} />
+                            })
+                        }
+                    </div>
+
 
             </section>
         </>
